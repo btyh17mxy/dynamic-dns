@@ -69,12 +69,12 @@ def main():
 
 
 if __name__ == '__main__':
-    # main()
-    logging.error("this is a error")
-    key = ''.join(
-        random.SystemRandom().choice(
-            string.ascii_uppercase + string.digits) for _ in range(42))
-    key_md5 = md5.new(key + secret).hexdigest()
-    print key, key_md5
-    print check_sum("%s,%s" % (key, key_md5))
+    main()
+    # logging.error("this is a error")
+    # key = ''.join(
+    #     random.SystemRandom().choice(
+    #         string.ascii_uppercase + string.digits) for _ in range(42))
+    # key_md5 = md5.new(key + secret).hexdigest()
+    # print key, key_md5
+    # print check_sum("%s,%s" % (key, key_md5))
     sys.exit(0)
