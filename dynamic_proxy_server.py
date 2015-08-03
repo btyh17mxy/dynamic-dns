@@ -50,37 +50,40 @@ def main():
     logging.info('starting up')
     pid = os.fork()
     if pid == 0:
-        last_ip = read_last_ip()
         signal.signal(signal.SIGTERM, on_term)
+        last_ip = read_last_ip()
         pidfile.acquire()
+
         serversocket = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
         serversocket.bind((config.host, config.port))
         serversocket.listen(5)
+        logging.info('starting listening at %s port %s' % (config.host, config.port))
         while True:
-            connection, new_ip = serversocket.accept()
+            connection, addr= serversocket.accept()
+            new_ip = addr[0]
             try:
                 connection.settimeout(5)
                 buf = connection.recv(1024)
-                if is_code_valid(buf.split(',')):
+                if is_code_valid(config.secret, buf):
                     if last_ip != new_ip:
                         logging.info('new ip detected %s, do update' % new_ip)
                         update_nginx_conf(new_ip)
                         write_last_ip(new_ip)
                         last_ip = new_ip
                         connection.send('ok')
+                    else:
+                        logging.info('ip not change')
                 else:
-                    logging.warn('secret illegal from  %s' % new_ip)
+                    logging.warning('secret illegal from  %s' % new_ip)
                     connection.send('fuck off')
             except socket.timeout:
                 logging.info('socket time out')
             except socket.error as e:
                 logging.error(e)
             connection.close()
-        os._exit(0)
     else:
         signal.signal(signal.SIGTERM, on_term)
-        sys.exit(0)
 
 
 if __name__ == '__main__':

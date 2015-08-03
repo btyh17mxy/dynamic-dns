@@ -32,18 +32,22 @@ def is_code_valid(secret, code):
     except ValueError as e:
         logging.error('fail to decode')
         logging.error(e)
-        return False
+    return False
 
 
 def update_nginx_conf(ip):
-    template = Template(filename='test.mako', module_directory='')
     for root, dirs, files in os.walk(config.nginx_conf_path):
         for f in files:
             if f.endswith('.mako'):
+                mako_file_path = os.path.join(
+                    root,
+                    f 
+                )
                 config_file_path = os.path.join(
                     root,
                     "%s.conf" % f.split('.')[0]
                 )
+                template = Template(filename=mako_file_path, module_directory='/tmp')
                 try:
                     f_config = open(
                         config_file_path,
