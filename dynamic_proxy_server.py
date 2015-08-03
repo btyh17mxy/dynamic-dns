@@ -1,10 +1,9 @@
 #!/usr/bin/env python
 # coding: utf-8
+from utils import is_code_valid
 import sys
-import string
 import socket
 import signal
-import random
 import os
 import md5
 import logging.handlers
@@ -20,7 +19,12 @@ port = 9999
 log_level = logging.INFO
 secret = "KJie982jlOAi2fa93"
 
-logging.basicConfig(filename=log, level=log_level)
+logging.basicConfig(
+    filename=log,
+    format='%(asctime)s %(levelname)s %(message)s',
+    datefmt='%Y %M %D %H:%M:%S',
+    level=log_level
+)
 pidfile = PIDLockFile(pidfile_path)
 
 
@@ -69,8 +73,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-    # logging.error("this is a error")
+    # main()
+    logging.error("this is a error")
     # key = ''.join(
     #     random.SystemRandom().choice(
     #         string.ascii_uppercase + string.digits) for _ in range(42))
