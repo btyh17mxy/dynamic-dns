@@ -29,25 +29,37 @@ def is_code_valid(secret, code):
     try:
         key, md5sum = code.split(',')
         return md5sum == md5.new(key + secret).hexdigest()
-    except ValueError:
+    except ValueError as e:
+        logging.error('fail to decode')
+        logging.error(e)
         return False
 
 
+def update_nginx_conf(ip):
+    template = Template(filename='test.mako', module_directory='')
+    for root, dirs, files in os.walk(config.nginx_conf_path):
+        for f in files:
+            if f.endswith('.mako'):
+                config_file_path = os.path.join(
+                    root,
+                    "%s.conf" % f.split('.')[0]
+                )
+                try:
+                    f_config = open(
+                        config_file_path,
+                        'w'
+                    )
+                    f_config.write(template.render(ip=ip))
+                except IOError as e:
+                    logging.error('can not write %s' % f_config)
+                    logging.error(e)
+        break
+
+
 def main():
-    secret = "adskjfkk"
-    code = generate_code(secret)
-    is_valid = is_code_valid(secret, code)
-    print code, is_valid
+    update_nginx_conf('1.2.2.2')
     pass
 
 
 if __name__ == "__main__":
-    template = Template(filename='test.mako', module_directory='')
-    # print template.render(ip="1.1.1.1")
-    for root, dirs, files in os.walk('/root/code/dynamic-nginx-proxy'):
-        for f in files:
-            if f.endswith('.mako'):
-                print f
-        break
-    pass
     main()

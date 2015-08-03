@@ -4,7 +4,8 @@ from jsob import JsOb
 import json
 
 
-config_file_path = 'config.json.sample'
+config_file_path = '/etc/dynamic-proxy.json'
+# config_file_path = 'config.json.sample'
 with open(config_file_path, 'r') as f_config:
     config = JsOb(**json.load(f_config))
 
