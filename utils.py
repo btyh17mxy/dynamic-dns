@@ -7,6 +7,14 @@ import string
 import logging.handlers
 import logging
 from mako.template import Template
+from config import config
+log_level = logging.INFO
+
+logging.basicConfig(
+    filename=os.path.join(config.logfile_path, 'dynamic-proxy-server.log'),
+    format='%(asctime)s %(levelname)s %(message)s',
+    level=log_level
+)
 
 
 def generate_code(secret):

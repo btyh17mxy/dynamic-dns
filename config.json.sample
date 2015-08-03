@@ -1,0 +1,9 @@
+{
+    "secret": "KJie982jlOAi2fa93", 
+    "log_level": 20, 
+    "logfile_path": "/var/log", 
+    "listen_ip": "45.33.51.22", 
+    "port": 9999, 
+    "pidfile_path": "/var/run"
+    "lastip_path": "/tmp"
+}

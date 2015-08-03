@@ -1,43 +1,26 @@
 #!/usr/bin/env python
 # coding: utf-8
-from utils import is_code_valid
 import sys
 import socket
 import signal
 import os
-import md5
 import logging.handlers
 import logging
 from lockfile.pidlockfile import PIDLockFile
-# from systemd import journal, daemon
-# import time
+from config import config
+from utils import generate_code, is_code_valid
 
-pidfile_path = "/var/run/dynamic-proxy-server.pid"
-log = "log"
-listen_address = '45.33.51.22'
-port = 9999
-log_level = logging.INFO
-secret = "KJie982jlOAi2fa93"
-
-logging.basicConfig(
-    filename=log,
-    format='%(asctime)s %(levelname)s %(message)s',
-    datefmt='%Y %M %D %H:%M:%S',
-    level=log_level
+pidfile = PIDLockFile(
+    os.path.join(config.pidfile_path, 'dynamic-proxy-server.pid')
 )
-pidfile = PIDLockFile(pidfile_path)
+
+last_ip = ''
 
 
 def on_term(sig, id):
+    f_lastip = open(config.lastip_path, 'dynamic-proxy-server-ip')
+    f_lastip.write("%s" % last_ip)
     sys.exit(0)
-
-
-def check_sum(key):
-    try:
-        key, md5sum = key.split(',')
-        return md5sum == md5.new(key + secret).hexdigest()
-    except ValueError:
-        return False
 
 
 def do_update(new_ip):
@@ -51,16 +34,16 @@ def main():
         pidfile.acquire()
         serversocket = socket.socket(
             socket.AF_INET, socket.SOCK_STREAM)
-        serversocket.bind((listen_address, port))
+        serversocket.bind((config.listen_ip, config.port))
         serversocket.listen(5)
         while True:
             connection, address = serversocket.accept()
             try:
                 connection.settimeout(5)
                 buf = connection.recv(1024)
-                if buf == '1':
-                    print address
-                    connection.send('welcome to server!')
+                if is_code_valid(buf.split(',')):
+                    # success
+                    pass
                 else:
                     connection.send('fuck off')
             except socket.timeout:
@@ -75,6 +58,9 @@ def main():
 if __name__ == '__main__':
     # main()
     logging.error("this is a error")
+    logging.info(generate_code("adsfasdf"))
+    print generate_code("adsfasdf")
+    print generate_code("adsfasdf")
     # key = ''.join(
     #     random.SystemRandom().choice(
     #         string.ascii_uppercase + string.digits) for _ in range(42))
