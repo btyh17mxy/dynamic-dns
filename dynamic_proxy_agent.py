@@ -33,7 +33,7 @@ def main():
                 s.connect((config.host, config.port))
                 s.send(generate_code(config.secret))
                 s.close()
-                time.sleep(10)
+                time.sleep(3)
             except socket.error as e:
                 logging.error(e)
     else:

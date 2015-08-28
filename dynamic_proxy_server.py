@@ -68,7 +68,9 @@ def main():
             socket.AF_INET, socket.SOCK_STREAM)
         serversocket.bind((config.host, config.port))
         serversocket.listen(5)
-        logging.info('starting listening at %s port %s' % (config.host, config.port))
+        logging.info('starting listening at %s port %s' % (
+            config.host,
+            config.port))
         while True:
             connection, addr = serversocket.accept()
             new_ip = addr[0]

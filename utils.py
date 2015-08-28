@@ -41,13 +41,16 @@ def update_nginx_conf(ip):
             if f.endswith('.mako'):
                 mako_file_path = os.path.join(
                     root,
-                    f 
+                    f
                 )
                 config_file_path = os.path.join(
                     root,
                     "%s.conf" % f.split('.')[0]
                 )
-                template = Template(filename=mako_file_path, module_directory='/tmp')
+                template = Template(
+                    filename=mako_file_path,
+                    module_directory='/tmp'
+                )
                 try:
                     f_config = open(
                         config_file_path,
