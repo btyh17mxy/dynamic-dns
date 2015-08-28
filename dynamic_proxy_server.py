@@ -8,6 +8,7 @@ from lockfile.pidlockfile import PIDLockFile
 from config import config
 from utils import is_code_valid, update_nginx_conf
 import logging
+from dnspod import Domain, Record
 
 pidfile = PIDLockFile(
     os.path.join(config.pidfile_path, 'dynamic-proxy-server.pid')
@@ -30,6 +31,15 @@ def write_last_ip(last_ip):
     except IOError as e:
         logging.error('fail to write last know ip to %s' % file_path)
         logging.error(e)
+
+
+def update_dns(last_ip):
+    domain = Domain(config.token_id, config.token)
+    record = Record(config.token_id, config.token)
+    domain_id = domain.domain_id_by_domain(config.domain)
+    record_id = record.get_record_id(domain_id, config.sub_domain)
+    record.modify(domain_id, record_id, 'A', last_ip,
+                  sub_domain=config.sub_domain)
 
 
 def read_last_ip():
@@ -60,7 +70,7 @@ def main():
         serversocket.listen(5)
         logging.info('starting listening at %s port %s' % (config.host, config.port))
         while True:
-            connection, addr= serversocket.accept()
+            connection, addr = serversocket.accept()
             new_ip = addr[0]
             try:
                 connection.settimeout(5)
@@ -70,6 +80,7 @@ def main():
                         logging.info('new ip detected %s, do update' % new_ip)
                         update_nginx_conf(new_ip)
                         write_last_ip(new_ip)
+                        update_dns(new_ip)
                         last_ip = new_ip
                         connection.send('ok')
                     else:

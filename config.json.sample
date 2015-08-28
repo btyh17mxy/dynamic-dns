@@ -6,8 +6,9 @@
     "port": 9999, 
     "pidfile_path": "/var/run",
     "lastip_path": "/tmp",
-    "domain": "proxy.mush.space",
-    "dnspod_user": "",
-    "dnspod_pwd": "",
+    "domain": "mush.space",
+    "sub_domain": "",
+    "token_id": "",
+    "token_": "",
     "nginx_conf_path": "/etc/nginx/conf.d"
 }
