@@ -568,10 +568,8 @@ class Record(DNSPodBase):
 
 
 class DomainTest(unittest.TestCase):
-    # ID：10655
-    # Token：e229e078d113eccd8bf0b33ef10123e5
     def setUp(self):
-        self.domain = Domain('10655', 'e229e078d113eccd8bf0b33ef10123e5')
+        self.domain = Domain('token_id', 'token')
         try:
             self.domain.create('btyh17mxy.com')
         except Exception, e:

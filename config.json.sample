@@ -2,7 +2,7 @@
     "secret": "KJie982jlOAi2fa93", 
     "log_level": 20, 
     "logfile_path": "/var/log", 
-    "host": "45.33.51.22", 
+    "host": "your host ip", 
     "port": 9999, 
     "pidfile_path": "/var/run",
     "lastip_path": "/tmp",
