@@ -6,12 +6,12 @@ import signal
 import os
 from lockfile.pidlockfile import PIDLockFile
 from config import config
-from utils import is_code_valid, update_nginx_conf
+from utils import is_code_valid
 import logging
 from dnspod import Domain, Record
 
 pidfile = PIDLockFile(
-    os.path.join(config.pidfile_path, 'dynamic-proxy-server.pid')
+    os.path.join(config.pidfile_path, 'dynamic-dns-server.pid')
 )
 
 
@@ -21,7 +21,7 @@ def on_term(sig, id):
 
 
 def write_last_ip(last_ip):
-    file_path = os.path.join(config.lastip_path, 'dynamic-proxy-server-ip')
+    file_path = os.path.join(config.lastip_path, 'dynamic-dns-server-ip')
     try:
         f_lastip = open(
             file_path,
@@ -43,7 +43,7 @@ def update_dns(last_ip):
 
 
 def read_last_ip():
-    file_path = os.path.join(config.lastip_path, 'dynamic-proxy-server-ip')
+    file_path = os.path.join(config.lastip_path, 'dynamic-dns-server-ip')
     try:
         f_lastip = open(
             file_path,
@@ -80,7 +80,6 @@ def main():
                 if is_code_valid(config.secret, buf):
                     if last_ip != new_ip:
                         logging.info('new ip detected %s, do update' % new_ip)
-                        update_nginx_conf(new_ip)
                         write_last_ip(new_ip)
                         update_dns(new_ip)
                         last_ip = new_ip

@@ -11,7 +11,7 @@ from config import config
 from utils import generate_code
 
 pidfile = PIDLockFile(
-    os.path.join(config.pidfile_path, 'dynamic-proxy-agent.pid')
+    os.path.join(config.pidfile_path, 'dynamic-dns-agent.pid')
 )
 
 

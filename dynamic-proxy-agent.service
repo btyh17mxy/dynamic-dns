@@ -1,5 +1,5 @@
 [Unit]
-Description=dynamic_proxy_server Daemon
+Description=dynamic_dns_server Daemon
 Wants=network.target
 After=syslog.target network.target
 
@@ -8,8 +8,8 @@ Type=forking
 User=root
 Group=root
 WorkingDirectory=/home/mush/code
-PIDFile=/var/run/dynamic-proxy-agent.pid
-ExecStart=/home/mush/code/dynamic_proxy_agent.py
+PIDFile=/var/run/dynamic-dns-agent.pid
+ExecStart=/home/mush/code/dynamic_dns_agent.py
 StandardOutput=syslog
 ExecStop=/bin/kill -15 $MAINPID
 TimeoutStopSec=5

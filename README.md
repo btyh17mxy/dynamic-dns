@@ -1,1 +1,1 @@
-# dynamic-nginx-proxy
+# dynamic-dns

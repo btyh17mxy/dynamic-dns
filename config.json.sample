@@ -10,5 +10,4 @@
     "sub_domain": "",
     "token_id": "",
     "token_": "",
-    "nginx_conf_path": "/etc/nginx/conf.d"
 }
