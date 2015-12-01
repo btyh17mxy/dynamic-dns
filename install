@@ -1,0 +1,16 @@
+#!/bin/bash
+INSTALLDIR="/opt/dynamic-dns"
+SYSTEMD="/usr/lib/systemd/system"
+if [[ $EUID -ne 0 ]]; then
+    echo "You mast run the install script as root" 
+    exit 1
+fi
+if [ ! -d "$INSTALLDIR" ]; then
+    mkdir $INSTALLDIR
+fi
+cp ./*.py $INSTALLDIR
+cp ./dynamic-dns-agent.service $SYSTEMD
+cp ./dynamic-dns-server.service $SYSTEMD
+cp ./config.json.sample /etc/dynamic-dns.json
+
+echo 'done'
