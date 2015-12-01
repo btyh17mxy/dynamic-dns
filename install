@@ -11,6 +11,10 @@ fi
 cp ./*.py $INSTALLDIR
 cp ./dynamic-dns-agent.service $SYSTEMD
 cp ./dynamic-dns-server.service $SYSTEMD
+if [ -f /etc/dynamic-dns.json ]; then
+    echo "move old config file to /etc/dynamic-dns.json.origin"
+    mv /etc/dynamic-dns.json  /etc/dynamic-dns.json.origin
+fi
 cp ./config.json.sample /etc/dynamic-dns.json
 
 echo 'done'
