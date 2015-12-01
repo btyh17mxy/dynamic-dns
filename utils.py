@@ -6,7 +6,6 @@ import md5
 import string
 import logging.handlers
 import logging
-from mako.template import Template
 from config import config
 log_level = logging.INFO
 
@@ -34,8 +33,8 @@ def is_code_valid(secret, code):
         logging.error(e)
     return False
 
+
 def main():
-    update_nginx_conf('1.2.2.2')
     pass
 
 
